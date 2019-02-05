@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.smith.cs.csc262.coopsh.apps.Cat;
+import edu.smith.cs.csc262.coopsh.apps.Echo;
 import edu.smith.cs.csc262.coopsh.apps.Pwd;
 import edu.smith.cs.csc262.coopsh.apps.WordCount;
 import edu.smith.cs.csc262.coopsh.text.ShellParser;
@@ -57,6 +58,8 @@ public class ShellEnvironment {
 	 */
 	public Task makeProgram(String name, String[] args) {
 		switch (name) {
+			case "echo":
+				return new Echo(this, args);
 		// Program: return a new Task object.
 		case "cat":
 			return new Cat(this, args);
@@ -71,6 +74,7 @@ public class ShellEnvironment {
 			executeChangeDir(args[0]);
 			return null;
 		// Agh!
+
 		default:
 			throw new RuntimeException("No such program: " + name);
 		}

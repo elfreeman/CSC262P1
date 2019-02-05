@@ -14,8 +14,15 @@ public class WordCount extends Task {
 	@Override
 	protected void update() {
 		InputLine line = this.input.poll();
+		//debugging statement
+		System.out.println(line+String.valueOf(this.input)+args[0]);
 		if (line == null) {
 			// still waiting for more...
+			//this may be wrong
+			System.err.println("The file is empty or does not exist");
+			this.closeOutput();
+			this.exit(0);
+			//
 			return;
 		}
 		
