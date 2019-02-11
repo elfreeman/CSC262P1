@@ -7,10 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import edu.smith.cs.csc262.coopsh.apps.Cat;
-import edu.smith.cs.csc262.coopsh.apps.Echo;
-import edu.smith.cs.csc262.coopsh.apps.Pwd;
-import edu.smith.cs.csc262.coopsh.apps.WordCount;
+import edu.smith.cs.csc262.coopsh.apps.*;
 import edu.smith.cs.csc262.coopsh.text.ShellParser;
 import edu.smith.cs.csc262.coopsh.text.Token;
 
@@ -58,25 +55,37 @@ public class ShellEnvironment {
 	 */
 	public Task makeProgram(String name, String[] args) {
 		switch (name) {
+			case "ls":
+				return new ListFiles(this, args);
+			case "tail":
+				return  new Tail(this, args);
+			case "head":
+				return new Head(this, args);
 			case "echo":
 				return new Echo(this, args);
-		// Program: return a new Task object.
-		case "cat":
-			return new Cat(this, args);
-		case "pwd":
-			return new Pwd(this, args);
-		case "wc":
-			return new WordCount(this, args);
-		// cd is special.
-		case "cd":
-			if (args.length != 1)
-				throw new IllegalArgumentException("More than one argument to cd!");
-			executeChangeDir(args[0]);
-			return null;
-		// Agh!
+			// Program: return a new Task object.
+			case "cat":
+				return new Cat(this, args);
+			case "pwd":
+				return new Pwd(this, args);
+			case "wc":
+				return new WordCount(this, args);
+			// cd is special.
+			case "cd":
+				if (args.length > 1 || args.length <0)
+					throw new IllegalArgumentException("More than one argument to cd!");
+				if(args.length == 0){
+					executeChangeDir(System.getProperty("user.home"));
+					//for this line I referenced stack overflow
+					//https://stackoverflow.com/questions/585534/what-is-the-best-way-to-find-the-users-home-directory-in-java/586345
+				}else {
+					executeChangeDir(args[0]);
+				}
+				return null;
+			// Agh!
 
-		default:
-			throw new RuntimeException("No such program: " + name);
+			default:
+				throw new RuntimeException("No such program: " + name);
 		}
 	}
 
