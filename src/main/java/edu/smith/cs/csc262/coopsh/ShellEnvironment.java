@@ -55,6 +55,8 @@ public class ShellEnvironment {
 	 */
 	public Task makeProgram(String name, String[] args) {
 		switch (name) {
+			case "sort":
+				return new Sort(this, args);
 			case "ls":
 				return new ListFiles(this, args);
 			case "tail":

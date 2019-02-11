@@ -131,10 +131,15 @@ public class ShellLexer {
 					case '"':
 					case '\'':
 						sb.append((char) getc());
+						break;
 					case 'n':
 						sb.append('\n');
+						getc();
+						break;
 					case 't':
 						sb.append('\t');
+						getc();
+						break;
 					default:
 						error("unhandled escape character: '"+(char) escaped+"'");	
 				}
