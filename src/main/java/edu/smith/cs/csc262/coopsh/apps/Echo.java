@@ -24,13 +24,13 @@ public class Echo extends Task {
     protected void update() {
         //case 1 -we're done
         if (counter >= args.length) {
-            System.out.println();
+            //this.println();
             this.closeOutput();
             this.exit(0);
             return;
         }else {
             //case 2 we still have args to read and print
-            System.out.print(args[counter] + " ");
+            this.println(args[counter] + " ");
             counter++;
         }
     }

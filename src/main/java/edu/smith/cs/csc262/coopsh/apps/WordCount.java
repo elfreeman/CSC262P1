@@ -15,7 +15,7 @@ public class WordCount extends Task {
 	protected void update() {
 		InputLine line = this.input.poll();
 		//debugging statement
-		System.out.println(line+String.valueOf(this.input)+args[0]);
+		//System.out.println(line+String.valueOf(this.input)+args[0]);
 		if (line == null) {
 			// still waiting for more...
 			//this may be wrong
@@ -25,7 +25,7 @@ public class WordCount extends Task {
 			//
 			return;
 		}
-		
+
 		// only output and print when we've seen the whole file!
 		if (line.isEndOfFile()) {
 			this.println(wordCount);
@@ -33,9 +33,17 @@ public class WordCount extends Task {
 			this.exit(0);
 			return;
 		}
-		
-		// Otherwise, increment this count!
-		wordCount += line.get().split("\\s+").length;		
+
+		//Otherwise, increment this count!
+		if (args.length == 0) {
+			// we count the number of words
+			wordCount += line.get().split("\\s+").length;
+		}else if(args[0].equals("-l")){
+			// we count the number of lines
+			wordCount++;
+		}else if(args[0].equals("-c")){
+			//count the numver of characters
+			wordCount += line.get().toCharArray().length;
+		}
 	}
-	
 }
