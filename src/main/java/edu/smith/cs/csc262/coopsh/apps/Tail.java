@@ -7,8 +7,10 @@ import edu.smith.cs.csc262.coopsh.Task;
 import java.util.LinkedList;
 
 public class Tail extends Task {
-    int numLines; //lines to be printed
-    LinkedList<InputLine>  lines = new LinkedList<InputLine>(); //since we don't know how many lines there will be
+    private int line; //points to the current line we are handling
+    private boolean reading = true; // are we handling input or output
+    private int numLines; //lines to be printed
+    private LinkedList<InputLine>  lines = new LinkedList<InputLine>(); //since we don't know how many lines there will be
                                     // store all the lines, only print the last numLines
 
     public Tail(ShellEnvironment env, String[] args){
@@ -24,25 +26,30 @@ public class Tail extends Task {
     }
 
     protected void update(){
-        InputLine line = this.input.poll();
-        if (line == null) {
-            // still waiting for more...
-            return;
-        }
-        if (line.isEndOfFile()) {
-            //we've stored all lines, now print last numLines
-            int start = Math.max(lines.size()-numLines, 0);
-            //is this chunk too big?
-            //I could introduce a boolean for reading input or writing output and write one line at a time instead
-            for(int i = start; i< lines.size(); i++){
-                this.println(lines.get(i).get());
+        if(reading) {
+            InputLine line = this.input.poll();
+            if (line == null) {
+                // still waiting for more...
+                return;
             }
-            this.closeOutput();
-            this.exit(0);
-            return;
-        }else {
-            //if we're not done add the line to our list
-            lines.add(line);
+            if (line.isEndOfFile()) {
+                //we've stored all lines, now switch from reading to writing
+                this.line = Math.max(lines.size() - numLines, 0);
+                reading = false;
+
+            } else {
+                //if we're not done add the line to our list
+                lines.add(line);
+            }
+        }else{
+            if(line<lines.size()){
+                this.println(lines.get(line).get());
+                line++;
+            }else{
+                this.closeOutput();
+                this.exit(0);
+                return;
+            }
         }
 
     }

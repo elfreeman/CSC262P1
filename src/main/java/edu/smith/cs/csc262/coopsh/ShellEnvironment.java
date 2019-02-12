@@ -55,6 +55,10 @@ public class ShellEnvironment {
 	 */
 	public Task makeProgram(String name, String[] args) {
 		switch (name) {
+			case "set":
+				return new SetVar(this, args);
+			case "rgrep":
+				return new RegexGrep(this, args);
 			case "grep":
 				return new SimpleGrep(this, args);
 			case "sort":
